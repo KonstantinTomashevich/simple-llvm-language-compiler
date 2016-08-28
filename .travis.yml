@@ -1,0 +1,14 @@
+language: cpp
+compiler: clang
+
+script:
+- mkdir build
+- cd build
+- cmake ..
+- make
+- make test
+
+after_failure:
+- cd Testing/Temporary
+- cat CTestCostData.txt
+- cat LastTest.txt
