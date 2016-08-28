@@ -1,3 +1,4 @@
+﻿include_directories (${CMAKE_CURRENT_SOURCE_DIR})
 add_subdirectory (CompilingLibrary)
 add_subdirectory (Compiler)
 if (ENABLE_TESTING)
