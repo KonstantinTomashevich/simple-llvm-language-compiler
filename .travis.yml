@@ -4,7 +4,7 @@ compiler: clang
 script:
 - mkdir build
 - cd build
-- cmake ..
+- cmake .. -DENABLE_TESTING=1
 - make
 - make test
 

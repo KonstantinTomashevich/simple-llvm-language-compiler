@@ -1,0 +1,5 @@
+add_subdirectory (CompilingLibrary)
+add_subdirectory (Compiler)
+if (ENABLE_TESTING)
+    add_subdirectory (Tests)
+endif ()
