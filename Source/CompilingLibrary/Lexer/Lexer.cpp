@@ -1,4 +1,4 @@
-﻿#include "Lexer.hpp"
+#include "Lexer.hpp"
 #include <assert.h>
 #include <iostream>
 
