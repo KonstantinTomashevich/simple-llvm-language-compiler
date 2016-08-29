@@ -1,0 +1,67 @@
+TREE_NODE:
+    PROTOTYPE
+        inbuilt_func with arguments [
+            arg1
+            arg2
+        ]
+
+    FUNCTION [
+        PROTOTYPE
+            func1 with arguments [
+                arg1
+                arg2
+            ]
+        BODY
+        2ARGUMENTS_OPERATOR [ OPERATOR =
+            left:
+                VARIABLE x
+            right:
+                2ARGUMENTS_OPERATOR [ OPERATOR +
+                    left:
+                        VARIABLE a
+                    right:
+                        2ARGUMENTS_OPERATOR [ OPERATOR +
+                            left:
+                                VARIABLE arg2
+                            right:
+                                2ARGUMENTS_OPERATOR [ OPERATOR +
+                                    left:
+                                        2ARGUMENTS_OPERATOR [ OPERATOR /
+                                            left:
+                                                2ARGUMENTS_OPERATOR [ OPERATOR *
+                                                    left:
+                                                        2ARGUMENTS_OPERATOR [ OPERATOR +
+                                                            left:
+                                                                VARIABLE c
+                                                            right:
+                                                                VARIABLE arg1
+                                                        ]
+                                                    right:
+                                                        VARIABLE e
+                                                ]
+                                            right:
+                                                2ARGUMENTS_OPERATOR [ OPERATOR *
+                                                    left:
+                                                        VARIABLE f
+                                                    right:
+                                                        VARIABLE h
+                                                ]
+                                        ]
+                                    right:
+                                        VARIABLE g
+                                ]
+                        ]
+                ]
+        ]
+        ]
+
+    FUNCTION [
+        PROTOTYPE
+             [without arguments]
+        BODY
+        CALL
+            func1 with arguments [
+                NUMBER 5.87
+                NUMBER 2.73
+            ]
+        ]
