@@ -6,53 +6,51 @@ namespace Compiling
 {
 namespace Lexer
 {
-bool Lexer::Step (char &output, int &scanStartIndex, std::string &code)
-{
-    if (scanStartIndex < code.size ())
-    {
-        output = code.at (scanStartIndex);
-        scanStartIndex += 1;
-        std::cout << "";
-        return (output != EOF);
-    }
-    else
-        return false;
-}
-
 bool Lexer::SkipCommentsAndSpaces (int &scanStartIndex, std::string &code)
 {
     bool isComment = false;
-    char lastChar;
+    char lastChar = -1;
     do
     {
-        if (!Step (lastChar, scanStartIndex, code))
+        if (lastChar != -1)
+            scanStartIndex++;
+
+        if (scanStartIndex < code.size ())
+            lastChar = code.at (scanStartIndex);
+        else
             return false;
+
         if (lastChar == COMMENT_START_CHAR)
             isComment = true;
+
         else if (lastChar == COMMENT_END_CHAR)
             isComment = false;
     }
     while (isComment || std::isspace (lastChar) || lastChar == COMMENT_START_CHAR || lastChar == COMMENT_END_CHAR
            || lastChar == '\n' || lastChar == '\r');
 
-    scanStartIndex -= 1;
     return true;
 }
 
 TokenData Lexer::ReadAsIdentifier (int &scanStartIndex, std::string &code)
 {
     std::string identifier = "";
-    char lastChar;
+    char lastChar = -1;
     do
     {
-        if (lastChar)
+        if (lastChar != -1)
+        {
             identifier += lastChar;
-        if (!Step (lastChar, scanStartIndex, code))
+            scanStartIndex++;
+        }
+
+        if (scanStartIndex < code.size ())
+            lastChar = code.at (scanStartIndex);
+        else
             return ReturnIdentifierOrCommand (identifier);
     }
     while ((std::isalnum (lastChar) || lastChar == '_') && lastChar != COMMENT_START_CHAR);
 
-    scanStartIndex -= 1;
     return ReturnIdentifierOrCommand (identifier);
 }
 
@@ -69,47 +67,50 @@ TokenData Lexer::ReturnIdentifierOrCommand (std::string string)
 TokenData Lexer::ReadAsNumber (int &scanStartIndex, std::string &code)
 {
     std::string number = "";
-    char lastChar;
+    char lastChar = -1;
     do
     {
-        if (lastChar)
+        if (lastChar != -1)
+        {
             number += lastChar;
-        if (!Step (lastChar, scanStartIndex, code))
+            scanStartIndex++;
+        }
+        if (scanStartIndex < code.size ())
+            lastChar = code.at (scanStartIndex);
+        else
             return TokenData (TOKEN_NUMBER, number);
     }
     while (std::isdigit (lastChar) || lastChar == '.');
 
-    scanStartIndex -= 1;
     return TokenData (TOKEN_NUMBER, number);
 }
 
 TokenData Lexer::ReadAsOperator (int &scanStartIndex, std::string &code)
 {
     std::string operatorName = "";
-    char lastChar;
+    char lastChar = -1;
     do
     {
-        if (lastChar)
+        if (lastChar != -1)
+        {
             operatorName += lastChar;
-        if (!Step (lastChar, scanStartIndex, code))
-            CorrectIfEmptyBracketsOperator (scanStartIndex, operatorName);
+            scanStartIndex++;
+        }
+
+        // For correct reading of empty brackets, for example "SampleFunction ()".
+        if (operatorName == "(" || operatorName == "[" || operatorName == "{" ||
+                operatorName == ")" || operatorName == "]" || operatorName == "}")
+            return TokenData (TOKEN_OPERATOR, operatorName);
+
+        if (scanStartIndex < code.size ())
+            lastChar = code.at (scanStartIndex);
+        else
+            return TokenData (TOKEN_OPERATOR, operatorName);
     }
     while (!std::isalnum (lastChar) && !std::isspace (lastChar) && lastChar != COMMENT_START_CHAR &&
            lastChar != '\n' && lastChar != '\r');
 
-    scanStartIndex -= 1;
-    return CorrectIfEmptyBracketsOperator (scanStartIndex, operatorName);
-}
-
-TokenData Lexer::CorrectIfEmptyBracketsOperator (int &scanStartIndex, std::string operatorName)
-{
-    if (operatorName == "()" || operatorName == "[]" || operatorName == "{}")
-    {
-        scanStartIndex -= 1;
-        return TokenData (TOKEN_OPERATOR, operatorName.substr (0, 1));
-    }
-    else
-        return TokenData (TOKEN_OPERATOR, operatorName);
+    return TokenData (TOKEN_OPERATOR, operatorName);
 }
 
 TokenData Lexer::NextToken (int &scanStartIndex, std::string &code)
@@ -121,9 +122,10 @@ TokenData Lexer::NextToken (int &scanStartIndex, std::string &code)
     if (!SkipCommentsAndSpaces (scanStartIndex, code))
         return TokenData (TOKEN_END_OF_INPUT);
 
-    if (!Step (lastChar, scanStartIndex, code))
+    if (scanStartIndex < code.size ())
+        lastChar = code.at (scanStartIndex);
+    else
         return TokenData (TOKEN_END_OF_INPUT);
-    scanStartIndex -= 1;
 
     if (std::isalpha (lastChar))
         return ReadAsIdentifier (scanStartIndex, code);

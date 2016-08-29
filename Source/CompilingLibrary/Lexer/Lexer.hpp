@@ -37,14 +37,11 @@ const char COMMENT_END_CHAR = '\n';
 class Lexer
 {
 protected:
-    bool Step (char &output, int &scanStartIndex, std::string &code);
     bool SkipCommentsAndSpaces (int &scanStartIndex, std::string &code);
-
     TokenData ReadAsIdentifier (int &scanStartIndex, std::string &code);
     TokenData ReturnIdentifierOrCommand (std::string string);
     TokenData ReadAsNumber (int &scanStartIndex, std::string &code);
     TokenData ReadAsOperator (int &scanStartIndex, std::string &code);
-    TokenData CorrectIfEmptyBracketsOperator (int &scanStartIndex, std::string operatorName);
     TokenData NextToken (int &scanStartIndex, std::string &code);
 public:
     Lexer ();
