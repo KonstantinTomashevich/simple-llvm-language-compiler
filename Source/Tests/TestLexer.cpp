@@ -30,7 +30,7 @@ int main (int argumentsCount, char* arguments [])
 {
     std::string code =
             "# This is small testing code\n" // 0 tokens
-            "extern (inbuilt_func)\n" // 4 tokens, TOKEN_EXTERN_COMMAND, TOKEN_OPERATOR, TOKEN_IDENTIFIER, TOKEN_OPERATOR
+            "extern (inbuilt_func (arg1, arg2))\n" // 9 tokens, TOKEN_EXTERN_COMMAND, TOKEN_OPERATOR, TOKEN_IDENTIFIER, TOKEN_OPERATOR, TOKEN_IDENTIFIER, TOKEN_OPERATOR, TOKEN_IDENTIFIER, TOKEN_OPERATOR, TOKEN_OPERATOR
             "# Multi\n" // 0 tokens
             "# line\n" // 0 tokens
             "# comment\n" // 0 tokens
@@ -47,28 +47,33 @@ int main (int argumentsCount, char* arguments [])
     for (int index = 0; index < tokens.size (); index++)
         std::cout << index << " = " << TokenDataToString (tokens.at (index));
 
-    if (tokens.size () != 15)
+    if (tokens.size () != 20)
     {
         std::cout << "Error in tokens count: expected 15, but got " << tokens.size () << "!\n";
         return ERROR_IN_TOKENS_NUMBER;
     }
 
-    Compiling::Lexer::TokenData expectedTokens [15];
+    Compiling::Lexer::TokenData expectedTokens [20];
     expectedTokens [0] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_EXTERN_COMMAND);
     expectedTokens [1] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
     expectedTokens [2] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "inbuilt_func");
-    expectedTokens [3] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
-    expectedTokens [4] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_DEF_COMMAND);
-    expectedTokens [5] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "func1");
-    expectedTokens [6] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
+    expectedTokens [3] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
+    expectedTokens [4] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "arg1");
+    expectedTokens [5] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ",");
+    expectedTokens [6] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "arg2");
     expectedTokens [7] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
-    expectedTokens [8] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "a");
-    expectedTokens [9] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "=");
-    expectedTokens [10] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_NUMBER, "5.67");
-    expectedTokens [11] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "func1");
-    expectedTokens [12] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
-    expectedTokens [13] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
-    expectedTokens [14] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_END_OF_INPUT);
+    expectedTokens [8] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
+    expectedTokens [9] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_DEF_COMMAND);
+    expectedTokens [10] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "func1");
+    expectedTokens [11] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
+    expectedTokens [12] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
+    expectedTokens [13] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "a");
+    expectedTokens [14] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "=");
+    expectedTokens [15] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_NUMBER, "5.67");
+    expectedTokens [16] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_IDENTIFIER, "func1");
+    expectedTokens [17] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, "(");
+    expectedTokens [18] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_OPERATOR, ")");
+    expectedTokens [19] = Compiling::Lexer::TokenData (Compiling::Lexer::TOKEN_END_OF_INPUT);
 
     for (int index = 0; index < tokens.size (); index++)
         if (tokens.at (index) != expectedTokens [index])
