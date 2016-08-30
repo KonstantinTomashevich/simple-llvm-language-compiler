@@ -3,7 +3,7 @@ compiler: gcc
 dist: trusty
 sudo: required
 
-# Install newer gcc
+# Install newer gcc and install llvm
 before_install:
 - sudo add-apt-repository ppa:ubuntu-toolchain-r/test -y
 - sudo apt-get update -qq
@@ -11,6 +11,7 @@ before_install:
 - if [ "$CXX" = "clang++" ]; then sudo apt-get install -qq libstdc++-4.8-dev; fi
 - if [ "$CXX" = "g++" ]; then sudo apt-get install -qq g++-4.8; fi
 - if [ "$CXX" = "g++" ]; then export CXX="g++-4.8" CC="gcc-4.8"; fi
+- sudo apt-get install llvm-3.8
 
 before_script:
 - PreviousPWD=$PWD
@@ -24,16 +25,16 @@ before_script:
 - cd $PreviousPWD
 
 # Build LLVM
-- wget http://llvm.org/releases/3.8.1/llvm-3.8.1.src.tar.xz -O LLVM.tar.xz
-- tar -xvf LLVM.tar.xz
-- cd llvm-3.8.1.src
-- mkdir build
-- cd build
-- ${RUN_CMAKE} .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PreviousPWD/LLVM
-- make
-- make install
-- export LLVM_INSTALLATION=$PreviousPWD/LLVM
-- cd $PreviousPWD
+#- wget http://llvm.org/releases/3.8.1/llvm-3.8.1.src.tar.xz -O LLVM.tar.xz
+#- tar -xvf LLVM.tar.xz
+#- cd llvm-3.8.1.src
+#- mkdir build
+#- cd build
+#- ${RUN_CMAKE} .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PreviousPWD/LLVM
+#- make
+#- make install
+#- export LLVM_INSTALLATION=$PreviousPWD/LLVM
+#- cd $PreviousPWD
 
 script:
 - mkdir build
