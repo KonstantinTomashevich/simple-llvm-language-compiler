@@ -1,10 +1,24 @@
 language: cpp
 compiler: clang
 
+before_script:
+- PreviousPWD=$PWD
+- wget http://llvm.org/releases/3.8.1/llvm-3.8.1.src.tar.xz LLVM.tar.xz
+- tar -xzvf LLVM.tar.xz
+- cd llvm-3.8.1.src
+- mkdir build
+- cd build
+- cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PreviousPWD/LLVM
+- make
+- make install
+- export LLVM_INSTALLATION=$PreviousPWD/LLVM
+- PWD=$PreviousPWD
+
 script:
 - mkdir build
 - cd build
-- cmake .. -DENABLE_TESTING=1
+- echo $LLVM_INSTALLATION
+- cmake .. -DENABLE_TESTING=1 -DLLVM_INSTALL_DIR=$LLVM_INSTALLATION
 - make
 - make test
 

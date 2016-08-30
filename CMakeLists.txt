@@ -15,5 +15,19 @@ endif ()
 
 project (SimpleLLVMLanguageCompiler)
 enable_testing ()
+
+
+if (NOT LLVM_INSTALL_DIR)
+    message (FATAL_ERROR "Specify LLVM_INSTALL_DIR!")
+endif ()
+
+set (LLVM_DIR ${LLVM_INSTALL_DIR}/share/llvm/cmake/)
+find_package (LLVM REQUIRED CONFIG)
+
+message (STATUS ${LLVM_INCLUDE_DIRS})
+include_directories (${LLVM_INCLUDE_DIRS})
+add_definitions (${LLVM_DEFINITIONS})
+llvm_map_components_to_libnames (LLVMLibs support core irreader)
+
 set (CMAKE_RUNTIME_OUTPUT_DIRECTORY ${CMAKE_BINARY_DIR}/bin)
 add_subdirectory (Source)
