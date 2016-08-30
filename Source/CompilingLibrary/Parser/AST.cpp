@@ -26,9 +26,9 @@ Number::Number (std::string data)
     number_ = atof (data.c_str ());
 }
 
-std::string Number::GenerateCode ()
+double Number::GetNumber ()
 {
-    //TODO: Implement.
+    return number_;
 }
 
 std::string Number::GenerateInfo (std::string indentation)
@@ -51,9 +51,9 @@ Variable::Variable (std::string name)
     name_ = name;
 }
 
-std::string Variable::GenerateCode ()
+std::string Variable::GetName ()
 {
-    //TODO: Implement.
+    return name_;
 }
 
 std::string Variable::GenerateInfo (std::string indentation)
@@ -75,9 +75,19 @@ TwoArgumentsOperator::TwoArgumentsOperator (std::string operatorName, Expression
     right_ = right;
 }
 
-std::string TwoArgumentsOperator::GenerateCode ()
+std::string TwoArgumentsOperator::GetOperatorName ()
 {
-    //TODO: Implement.
+    return operatorName_;
+}
+
+Expression *TwoArgumentsOperator::GetLeft ()
+{
+    return left_;
+}
+
+Expression *TwoArgumentsOperator::GetRight ()
+{
+    return right_;
 }
 
 std::string TwoArgumentsOperator::GenerateInfo (std::string indentation)
@@ -105,9 +115,14 @@ Call::Call (std::string functionName, std::vector <Expression *> arguments)
     arguments_ = arguments;
 }
 
-std::string Call::GenerateCode ()
+std::string Call::GetFunctionName ()
 {
-    //TODO: Implement.
+    return functionName_;
+}
+
+std::vector <Expression *> *Call::GetArgumentsVector ()
+{
+    return &arguments_;
 }
 
 std::string Call::GenerateInfo (std::string indentation)
@@ -139,9 +154,14 @@ Prototype::Prototype (std::string name, std::vector<std::string> arguments)
     arguments_ = arguments;
 }
 
-std::string Prototype::GenerateCode ()
+std::string Prototype::GetName ()
 {
-    //TODO: Implement.
+    return name_;
+}
+
+std::vector <std::string> *Prototype::GetArgumentsVector ()
+{
+    return &arguments_;
 }
 
 std::string Prototype::GenerateInfo (std::string indentation)
@@ -172,9 +192,14 @@ Function::Function (Prototype *prototype, Expression *body)
     body_ = body;
 }
 
-std::string Function::GenerateCode ()
+Prototype *Function::GetPrototype ()
 {
-    //TODO: Implement.
+    return prototype_;
+}
+
+Expression *Function::GetBody ()
+{
+    return body_;
 }
 
 std::string Function::GenerateInfo (std::string indentation)
@@ -200,11 +225,6 @@ Empty::Empty ()
 
 }
 
-std::string Empty::GenerateCode ()
-{
-    return "";
-}
-
 std::string Empty::GenerateInfo (std::string indentation)
 {
     return indentation + "EMPTY_EXPRESSION\n";
@@ -225,12 +245,9 @@ void TreeNode::PushValue (TreeValue *value)
     childs_.push_back (value);
 }
 
-std::string TreeNode::GenerateCode ()
+std::vector <TreeValue *> *TreeNode::GetChildsVector()
 {
-    std::string code;
-    for (int index = 0; index < childs_.size (); index++)
-        code += childs_.at (index)->GenerateCode ();
-    return code;
+    return &childs_;
 }
 
 std::string TreeNode::GenerateInfo (std::string indentation)

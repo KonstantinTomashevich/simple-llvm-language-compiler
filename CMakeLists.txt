@@ -26,7 +26,6 @@ if (LLVM_INSTALL_DIR)
 endif ()
 find_package (LLVM REQUIRED CONFIG)
 
-message (STATUS ${LLVM_INCLUDE_DIRS})
 include_directories (${LLVM_INCLUDE_DIRS})
 add_definitions (${LLVM_DEFINITIONS})
 llvm_map_components_to_libnames (LLVMLibs support core irreader)

@@ -20,7 +20,6 @@ class TreeValue
 {
 public:
     virtual std::string GetType () = 0;
-    virtual std::string GenerateCode () = 0;
     virtual std::string GenerateInfo (std::string indentation) = 0;
     virtual ~TreeValue ();
 };
@@ -33,7 +32,7 @@ protected:
 public:
     TreeNode ();
     void PushValue (TreeValue *value);
-    virtual std::string GenerateCode ();
+    std::vector <TreeValue *> *GetChildsVector ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~TreeNode ();
 };
@@ -53,7 +52,6 @@ class Empty
 AST_TYPE (Empty)
 public:
     Empty ();
-    virtual std::string GenerateCode ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Empty ();
 };
@@ -66,7 +64,7 @@ protected:
     double number_;
 public:
     Number (std::string data);
-    virtual std::string GenerateCode ();
+    double GetNumber ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Number ();
 };
@@ -79,7 +77,7 @@ protected:
     std::string name_;
 public:
     Variable (std::string name);
-    virtual std::string GenerateCode ();
+    std::string GetName ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Variable ();
 };
@@ -94,7 +92,9 @@ protected:
     Expression *right_;
 public:
     TwoArgumentsOperator (std::string operatorName, Expression *left, Expression *right);
-    virtual std::string GenerateCode ();
+    std::string GetOperatorName ();
+    Expression *GetLeft ();
+    Expression *GetRight ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~TwoArgumentsOperator ();
 };
@@ -108,7 +108,8 @@ protected:
     std::vector <Expression *> arguments_;
 public:
     Call (std::string functionName, std::vector <Expression *> arguments);
-    virtual std::string GenerateCode ();
+    std::string GetFunctionName ();
+    std::vector <Expression *> *GetArgumentsVector ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Call ();
 };
@@ -122,7 +123,8 @@ protected:
     std::vector <std::string> arguments_;
 public:
     Prototype (std::string name, std::vector <std::string> arguments);
-    virtual std::string GenerateCode ();
+    std::string GetName ();
+    std::vector <std::string> *GetArgumentsVector ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Prototype ();
 };
@@ -136,7 +138,8 @@ protected:
     Expression *body_;
 public:
     Function (Prototype *prototype, Expression *body);
-    virtual std::string GenerateCode ();
+    Prototype *GetPrototype ();
+    Expression *GetBody ();
     virtual std::string GenerateInfo (std::string indentation);
     virtual ~Function ();
 };
