@@ -18,10 +18,12 @@ enable_testing ()
 
 
 if (NOT LLVM_INSTALL_DIR)
-    message (FATAL_ERROR "Specify LLVM_INSTALL_DIR!")
+    message (WARNING "Specify LLVM_INSTALL_DIR!")
 endif ()
 
-set (LLVM_DIR ${LLVM_INSTALL_DIR}/share/llvm/cmake/)
+if (LLVM_INSTALL_DIR)
+    set (LLVM_DIR ${LLVM_INSTALL_DIR}/share/llvm/cmake/)
+endif ()
 find_package (LLVM REQUIRED CONFIG)
 
 message (STATUS ${LLVM_INCLUDE_DIRS})
