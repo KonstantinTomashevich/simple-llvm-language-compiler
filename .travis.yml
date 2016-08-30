@@ -2,29 +2,33 @@ language: cpp
 compiler: clang
 
 before_script:
+- PreviousPWD=$PWD
 # Install newer CMake
 - CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
-- mkdir cmake && travis_retry wget --no-check-certificate --quiet -O - ${CMAKE_URL} | tar --strip-components=1 -xz -C cmake
-- export PATH=${DEPS_DIR}/cmake/bin:${PATH}
+- mkdir cmake
+- cd cmake
+- wget ${CMAKE_URL} -O cmake.tar.gz
+- tar -xzf cmake.tar.gz
+- export RUN_CMAKE=${PWD}/cmake-3.5.2-Linux-x86_64/bin/cmake
+- cd $PreviousPWD
 
 # Build LLVM
-- PreviousPWD=$PWD
 - wget http://llvm.org/releases/3.8.1/llvm-3.8.1.src.tar.xz -O LLVM.tar.xz
 - tar -xvf LLVM.tar.xz
 - cd llvm-3.8.1.src
 - mkdir build
 - cd build
-- cmake .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PreviousPWD/LLVM
+- ${RUN_CMAKE} .. -DCMAKE_BUILD_TYPE=Release -DCMAKE_INSTALL_PREFIX=$PreviousPWD/LLVM
 - make
 - make install
 - export LLVM_INSTALLATION=$PreviousPWD/LLVM
-- PWD=$PreviousPWD
+- cd $PreviousPWD
 
 script:
 - mkdir build
 - cd build
 - echo $LLVM_INSTALLATION
-- cmake .. -DENABLE_TESTING=1 -DLLVM_INSTALL_DIR=$LLVM_INSTALLATION
+- ${RUN_CMAKE} .. -DENABLE_TESTING=1 -DLLVM_INSTALL_DIR=$LLVM_INSTALLATION
 - make
 - make test
 
