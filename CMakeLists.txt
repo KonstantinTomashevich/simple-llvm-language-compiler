@@ -14,6 +14,7 @@ if (COMMAND cmake_policy)
 endif ()
 
 project (SimpleLLVMLanguageCompiler)
+set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -std=c++11")
 enable_testing ()
 
 
