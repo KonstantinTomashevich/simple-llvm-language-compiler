@@ -7,7 +7,7 @@ before_script:
 - CMAKE_URL="http://www.cmake.org/files/v3.5/cmake-3.5.2-Linux-x86_64.tar.gz"
 - mkdir cmake
 - cd cmake
-- wget ${CMAKE_URL} -O cmake.tar.gz
+- wget --no-check-certificate ${CMAKE_URL} -O cmake.tar.gz
 - tar -xzf cmake.tar.gz
 - export RUN_CMAKE=${PWD}/cmake-3.5.2-Linux-x86_64/bin/cmake
 - cd $PreviousPWD
