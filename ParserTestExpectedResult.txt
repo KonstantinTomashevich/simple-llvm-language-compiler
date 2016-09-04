@@ -26,25 +26,25 @@ TREE_NODE:
                             right:
                                 2ARGUMENTS_OPERATOR [ OPERATOR +
                                     left:
-                                        2ARGUMENTS_OPERATOR [ OPERATOR /
+                                        2ARGUMENTS_OPERATOR [ OPERATOR *
                                             left:
-                                                2ARGUMENTS_OPERATOR [ OPERATOR *
+                                                2ARGUMENTS_OPERATOR [ OPERATOR +
                                                     left:
-                                                        2ARGUMENTS_OPERATOR [ OPERATOR +
-                                                            left:
-                                                                VARIABLE c
-                                                            right:
-                                                                VARIABLE arg1
-                                                        ]
+                                                        VARIABLE c
                                                     right:
-                                                        VARIABLE e
+                                                        VARIABLE arg1
                                                 ]
                                             right:
-                                                2ARGUMENTS_OPERATOR [ OPERATOR *
+                                                2ARGUMENTS_OPERATOR [ OPERATOR /
                                                     left:
-                                                        VARIABLE f
+                                                        VARIABLE e
                                                     right:
-                                                        VARIABLE h
+                                                        2ARGUMENTS_OPERATOR [ OPERATOR *
+                                                            left:
+                                                                VARIABLE f
+                                                            right:
+                                                                VARIABLE h
+                                                        ]
                                                 ]
                                         ]
                                     right:

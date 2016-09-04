@@ -284,10 +284,10 @@ Parser::Parser ()
 {
     isListed_ = false;
     binaryOperatorsPrecedence_ ["*"] = 2000;
-    binaryOperatorsPrecedence_ ["/"] = 1900;
-    binaryOperatorsPrecedence_ ["%"] = 1800;
+    binaryOperatorsPrecedence_ ["/"] = 2000;
+    binaryOperatorsPrecedence_ ["%"] = 2000;
     binaryOperatorsPrecedence_ ["+"] = 1700;
-    binaryOperatorsPrecedence_ ["-"] = 1600;
+    binaryOperatorsPrecedence_ ["-"] = 1700;
     binaryOperatorsPrecedence_ ["<"] = 1500;
     binaryOperatorsPrecedence_ [">"] = 1400;
     binaryOperatorsPrecedence_ ["<="] = 1300;
