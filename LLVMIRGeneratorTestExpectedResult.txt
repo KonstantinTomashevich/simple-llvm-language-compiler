@@ -1,0 +1,43 @@
+; ModuleID = 'test_module'
+
+declare double @sin(double)
+
+declare double @cos(double)
+
+define double @function1(double %arg1, double %arg2, double %arg3) {
+entry:
+  %temporary_multiply_function = fmul double %arg2, %arg3
+  %sin_temporary_call = call double @sin(double %arg1)
+  %cos_temporary_call = call double @cos(double %arg2)
+  %sin_temporary_call1 = call double @sin(double %arg3)
+  %temporary_div_function = fdiv double %cos_temporary_call, %sin_temporary_call1
+  %temporary_multiply_function2 = fmul double %sin_temporary_call, %temporary_div_function
+  %temporary_add_function = fadd double 1.250000e+00, %temporary_multiply_function2
+  %temporary_add_function3 = fadd double 6.789000e+00, %temporary_add_function
+  %temporary_sub_function = fsub double %temporary_multiply_function, %temporary_add_function3
+  %temporary_add_function4 = fadd double %arg1, %temporary_sub_function
+  ret double %temporary_add_function4
+}
+
+define double @function2(double %arg) {
+entry:
+  %temporary_multiply_function = fmul double %arg, 5.670000e+00
+  %temporary_div_function = fdiv double %arg, 8.900000e+00
+  %cos_temporary_call = call double @cos(double %temporary_div_function)
+  %temporary_sub_function = fsub double %arg, 2.050000e+00
+  %function1_temporary_call = call double @function1(double %temporary_multiply_function, double %cos_temporary_call, double %temporary_sub_function)
+  ret double %function1_temporary_call
+}
+
+define double @0() {
+entry:
+  %function1_temporary_call = call double @function1(double 5.600000e+00, double 3.400000e+00, double 6.700000e+00)
+  ret double %function1_temporary_call
+}
+
+define double @1() {
+entry:
+  %sin_temporary_call = call double @sin(double 3.400000e+00)
+  %function2_temporary_call = call double @function2(double %sin_temporary_call)
+  ret double %function2_temporary_call
+}

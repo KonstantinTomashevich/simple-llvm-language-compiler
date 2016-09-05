@@ -5,12 +5,14 @@
 #include <CompilingLibrary/Lexer/Lexer.hpp>
 #include <CompilingLibrary/Parser/Parser.hpp>
 #include <CompilingLibrary/Parser/AST.hpp>
+#include <CompilingLibrary/Generators/ToLLVM/LLVMGenerator.hpp>
 #include "Defines.hpp"
 
 enum ErrorExits
 {
     ERROR_WHILE_PARSING = 1,
-    ERROR_RESULT_INFO_CODE_DONT_EQUALS_EXPECTED = 2
+    ERROR_WHILE_LLVM_IR_CODE_GENERATION = 2,
+    ERROR_CODE_DONT_EQUALS_EXPECTED = 3
 };
 
 std::string TokenDataToString (Compiling::Lexer::TokenData tokenData)
@@ -34,15 +36,19 @@ std::string TokenDataToString (Compiling::Lexer::TokenData tokenData)
 int main (int argumentsCount, char* arguments [])
 {
     std::string code =
-            "# This is small testing code\n"
-            "extern inbuilt_func (arg1, arg2)\n"
-            "# Multi\n"
-            "# line\n"
-            "# comment\n"
-            "def func1 (arg1, arg2)\n"
-            "    x = a + arg2 + (c + arg1) * e / f * h + g\n"
-            "\n"
-            "func1 (5.87, 2.73)\n";
+            "# This is small testing code\n\n"
+            "extern sin (angle)\n"
+            "extern cos (angle)\n\n"
+            "# Multi \n"
+            "# Line \n"
+            "# Comment \n\n"
+            "def function1 (arg1, arg2, arg3)\n"
+            "    arg1 + arg2 * arg3 - 6.789 + 1.25 + sin (arg1) * cos (arg2) / sin (arg3)\n\n"
+            "def function2 (arg)\n"
+            "    function1 (arg * 5.67, cos (arg / 8.9), arg - 2.05)\n\n"
+            "function1 (5.6, 3.4, 6.7)\n"
+            "function2 (sin (3.4))\n";
+
     std::cout << "Testing code:\n" << code << "\n\n\n";
     Compiling::Lexer::Lexer lexer;
     std::vector <Compiling::Lexer::TokenData> tokens = lexer.LexString (code);
@@ -58,26 +64,37 @@ int main (int argumentsCount, char* arguments [])
 
     std::string infoCode = treeRoot->GenerateInfo ("");
     std::cout << "\n\n\nResulting AST (by treeRoot->GenerateInfo ()):\n" << infoCode << "\n\n\n";
-    delete treeRoot;
+
     if (!result)
     {
         std::cerr << "\n\nFAILED: Error while parsing!\n\n";
+        delete treeRoot;
         return ERROR_WHILE_PARSING;
     }
 
-    std::ifstream expectedResultFile (PARSER_TEST_EXPECTED_INFO_FILE);
-    std::string expectedInfoCode;
-    std::string infoCodeLine;
-    while (std::getline (expectedResultFile, infoCodeLine))
-        expectedInfoCode += infoCodeLine + "\n";
+    Compiling::Generators::ToLLVM::LLVMGenerator generator;
+    std::string ir = generator.GenerateCode (treeRoot, "test_module", result);
+    delete treeRoot;
+    std::cout << "\n\n\nGenerated LLVM IR:\n\n" << ir << "\n\n\n";
+
+    if (!result)
+    {
+        std::cerr << "\n\nFAILED: Error while generating!\n\n";
+        return ERROR_WHILE_LLVM_IR_CODE_GENERATION;
+    }
+
+    std::ifstream expectedResultFile (LLVM_IR_GENERATOR_TEST_EXPECTED_CODE_FILE);
+    std::string expectedCode;
+    std::string codeLine;
+    while (std::getline (expectedResultFile, codeLine))
+        expectedCode += codeLine + "\n";
     expectedResultFile.close ();
 
-    if (expectedInfoCode != infoCode)
+    if (ir != expectedCode)
     {
-        std::cerr << "\n\nFAILED: Result code isn't equal to expected!\n\n";
-        std::cerr << "Expected info code:\n";
-        std::cerr << expectedInfoCode;
-        return ERROR_RESULT_INFO_CODE_DONT_EQUALS_EXPECTED;
+        std::cout << "Generated IR don't equals expected! Expected IR:\n\n" << expectedCode << "\n\n\n";
+        std::cout << "FAILED: Generated IR don't equals expected!";
+        return ERROR_CODE_DONT_EQUALS_EXPECTED;
     }
     return 0;
 }

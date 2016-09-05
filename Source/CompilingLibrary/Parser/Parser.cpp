@@ -285,7 +285,7 @@ Parser::Parser ()
     isListed_ = false;
     binaryOperatorsPrecedence_ ["*"] = 2000;
     binaryOperatorsPrecedence_ ["/"] = 2000;
-    binaryOperatorsPrecedence_ ["%"] = 2000;
+    binaryOperatorsPrecedence_ ["%"] = 2000;  //TODO: Not supported by LLVM generator now.
     binaryOperatorsPrecedence_ ["+"] = 1700;
     binaryOperatorsPrecedence_ ["-"] = 1700;
     binaryOperatorsPrecedence_ ["<"] = 1500;
@@ -294,14 +294,14 @@ Parser::Parser ()
     binaryOperatorsPrecedence_ [">="] = 1200;
     binaryOperatorsPrecedence_ ["=="] = 1100;
     binaryOperatorsPrecedence_ ["!="] = 1000;
-    binaryOperatorsPrecedence_ ["&&"] = 900;
-    binaryOperatorsPrecedence_ [ "||"] = 800;
-    binaryOperatorsPrecedence_ ["="] = 700;
-    binaryOperatorsPrecedence_ ["*="] = 600;
-    binaryOperatorsPrecedence_ ["/="] = 500;
-    binaryOperatorsPrecedence_ ["%="] = 400;
-    binaryOperatorsPrecedence_ ["+="] = 300;
-    binaryOperatorsPrecedence_ ["-="] = 200;
+    binaryOperatorsPrecedence_ ["&&"] = 900;  //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ [ "||"] = 800; //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["="] = 700;   //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["*="] = 600;  //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["/="] = 500;  //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["%="] = 400;  //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["+="] = 300;  //TODO: Not supported by LLVM generator now.
+    binaryOperatorsPrecedence_ ["-="] = 200;  //TODO: Not supported by LLVM generator now.
 }
 
 AST::TreeNode *Parser::Parse (std::vector <Lexer::TokenData> tokens, bool &resultOutput)
